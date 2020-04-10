@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Item from './individualItem';
 
 export default class MainPage extends Component {
     state = {
+        question: '',
         data: []
     }
 
@@ -11,24 +13,31 @@ export default class MainPage extends Component {
 
         const response = await fetch(`https://8ball.delegator.com/magic/JSON/${params}`);
         const data = await response.json();
-        console.log(data.magic.question)
-        return data;
+        return data.magic;
     }
 
     async componentDidMount() {
         const apiData = await this.getData();
 
         this.setState({
-            data: apiData
-        })
+            data: [...this.state.data, apiData]
+         })
     }
 
     render() {
         const {data} = this.state;
+        console.log(data[0])
 
         return (
             <>
-                <div>{data}</div>
+                <div>
+                    <div>
+                        {data.map((item, index) =>(
+                        <Item data={item}/>
+                        ))}
+                    </div>
+                    <div>aaaa</div>
+                </div>
             </>
         )
     }
